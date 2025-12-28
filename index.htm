@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support with Bitcoin</title>
+    <title>Help me retire ❤️❤️</title>
     <style>
         * {
             margin: 0;
@@ -43,7 +43,50 @@
             font-size: 16px;
         }
 
-        .bitcoin-logo {
+        .crypto-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .tab {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .tab-icon {
+            font-size: 20px;
+        }
+
+        .crypto-content {
+            display: none;
+        }
+
+        .crypto-content.active {
+            display: block;
+        }
+
+        .crypto-logo {
             font-size: 60px;
             margin-bottom: 20px;
         }
@@ -56,7 +99,7 @@
             display: inline-block;
         }
 
-        #qrcode {
+        #qrcode-btc, #qrcode-eth {
             display: inline-block;
         }
 
@@ -126,57 +169,132 @@
                 font-size: 12px;
                 padding: 12px;
             }
+
+            .crypto-tabs {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .tab {
+                padding: 10px 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="bitcoin-logo">₿</div>
-        <h1>Help me retire, Bitcoin</h1>
+        <h1>Help me retire ❤️</h1>
         <p class="subtitle">I just want to spend time with my family.</p>
 
-        <div class="qr-container">
-            <div id="qrcode"></div>
+        <div class="crypto-tabs">
+            <div class="tab active" onclick="switchTab('btc')">
+                <span class="tab-icon">₿</span>
+                <span>Bitcoin</span>
+            </div>
+            <div class="tab" onclick="switchTab('eth')">
+                <span class="tab-icon">Ξ</span>
+                <span>Ethereum</span>
+            </div>
         </div>
 
-        <div class="address-container" id="btcAddress">
-            3C6mWVVaCmbvUJqLoSUkjQzeL7Yb6tugRs
+        <!-- Bitcoin Content -->
+        <div id="btc-content" class="crypto-content active">
+            <div class="crypto-logo">₿</div>
+
+            <div class="qr-container">
+                <div id="qrcode-btc"></div>
+            </div>
+
+            <div class="address-container" id="btcAddress">
+                3C6mWVVaCmbvUJqLoSUkjQzeL7Yb6tugRs
+            </div>
+
+            <button class="copy-btn" onclick="copyAddress('btc')">
+                Copy Address
+            </button>
+
+            <div class="copied-message" id="copiedMessage-btc">
+                Address copied to clipboard!
+            </div>
+
+            <div class="footer">
+                Scan QR code or copy address to send Bitcoin
+            </div>
         </div>
 
-        <button class="copy-btn" onclick="copyAddress()">
-            Copy Address
-        </button>
+        <!-- Ethereum Content -->
+        <div id="eth-content" class="crypto-content">
+            <div class="crypto-logo">Ξ</div>
 
-        <div class="copied-message" id="copiedMessage">
-            Address copied to clipboard!
-        </div>
+            <div class="qr-container">
+                <div id="qrcode-eth"></div>
+            </div>
 
-        <div class="footer">
-            Scan QR code or copy address to send Bitcoin
+            <div class="address-container" id="ethAddress">
+                0x8953e1eC6F065FFE539d9f125bE9a4AD587c121d
+            </div>
+
+            <button class="copy-btn" onclick="copyAddress('eth')">
+                Copy Address
+            </button>
+
+            <div class="copied-message" id="copiedMessage-eth">
+                Address copied to clipboard!
+            </div>
+
+            <div class="footer">
+                Scan QR code or copy address to send Ethereum
+            </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
-        // Replace this with your actual Bitcoin address
-        const bitcoinAddress = '3C6mWVVaCmbvUJqLoSUkjQzeL7Yb6tugRs';
+        const addresses = {
+            btc: '3C6mWVVaCmbvUJqLoSUkjQzeL7Yb6tugRs',
+            eth: '0x8953e1eC6F065FFE539d9f125bE9a4AD587c121d'
+        };
 
-        // Generate QR code
-        new QRCode(document.getElementById("qrcode"), {
-            text: bitcoinAddress,
-            width: 200,
-            height: 200,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
+        // Generate QR codes on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            new QRCode(document.getElementById("qrcode-btc"), {
+                text: addresses.btc,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            new QRCode(document.getElementById("qrcode-eth"), {
+                text: addresses.eth,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
         });
 
+        // Switch between crypto tabs
+        function switchTab(crypto) {
+            // Update tab buttons
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.closest('.tab').classList.add('active');
+
+            // Update content sections
+            document.getElementById('btc-content').classList.remove('active');
+            document.getElementById('eth-content').classList.remove('active');
+            document.getElementById(`${crypto}-content`).classList.add('active');
+        }
+
         // Copy to clipboard function
-        function copyAddress() {
-            const addressText = document.getElementById('btcAddress').textContent;
+        function copyAddress(crypto) {
+            const addressText = document.getElementById(`${crypto}Address`).textContent;
 
             navigator.clipboard.writeText(addressText).then(() => {
-                const message = document.getElementById('copiedMessage');
+                const message = document.getElementById(`copiedMessage-${crypto}`);
                 message.classList.add('show');
 
                 setTimeout(() => {
