@@ -156,6 +156,59 @@
             font-size: 14px;
         }
 
+        .disclaimer {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e9ecef;
+            text-align: left;
+            display: none;
+        }
+
+        .disclaimer.show {
+            display: block;
+        }
+
+        .disclaimer-toggle {
+            margin-top: 30px;
+            background: transparent;
+            color: #999;
+            border: 1px solid #e9ecef;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .disclaimer-toggle:hover {
+            background: #f8f9fa;
+            color: #667eea;
+            border-color: #667eea;
+        }
+
+        .disclaimer h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .disclaimer-item {
+            margin-bottom: 15px;
+        }
+
+        .disclaimer-item h3 {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .disclaimer-item p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 30px 20px;
@@ -246,6 +299,29 @@
                 Scan QR code or copy address to send Ethereum
             </div>
         </div>
+
+        <button class="disclaimer-toggle" onclick="toggleDisclaimer()">
+            Show Disclaimer
+        </button>
+
+        <div class="disclaimer" id="disclaimer">
+            <h2>A Few Important Things</h2>
+
+            <div class="disclaimer-item">
+                <h3>Just Being Real With You</h3>
+                <p>This isn't an investment or business opportunity - I'm not promising anything in return. It's just a way for kind folks to help out if they want to.</p>
+            </div>
+
+            <div class="disclaimer-item">
+                <h3>About Donations</h3>
+                <p>Anything you send is a voluntary gift from the heart. Because of how cryptocurrency works, I won't be able to send refunds, so please only give what feels right for you.</p>
+            </div>
+
+            <div class="disclaimer-item">
+                <h3>Tax Stuff</h3>
+                <p>I'm not a tax expert, so please check with a tax professional about your own obligations. Everyone's situation is different!</p>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -304,6 +380,20 @@
                 console.error('Failed to copy:', err);
                 alert('Failed to copy address. Please copy manually.');
             });
+        }
+
+        // Toggle disclaimer visibility
+        function toggleDisclaimer() {
+            const disclaimer = document.getElementById('disclaimer');
+            const button = event.target;
+
+            disclaimer.classList.toggle('show');
+
+            if (disclaimer.classList.contains('show')) {
+                button.textContent = 'Hide Disclaimer';
+            } else {
+                button.textContent = 'Show Disclaimer';
+            }
         }
     </script>
 </body>
